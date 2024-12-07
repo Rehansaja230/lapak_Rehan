@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Lapak Rehan</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.13/dist/full.min.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-[#0A254A] text-white">
+    <div class="container mx-auto flex items-center justify-between py-4 px-6">
+      <img src="resource/Image/logolapak.png" alt="Logo Lapak UBB" class="w-20">
+      <div class="flex items-center gap-4">
+        <a href="index_noresponsive.html" class="text-white">Kembali ke Beranda</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Checkout -->
+  <main class="container mx-auto py-16 px-4">
+    <h2 class="text-3xl font-semibold text-center mb-6">Checkout</h2>
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <!-- Ringkasan Pesanan -->
+      <h3 class="text-xl font-semibold mb-4">Ringkasan Pesanan</h3>
+      <div class="space-y-6" id="orderSummary">
+        <!-- Produk di Keranjang (Contoh) -->
+        <div class="flex items-center justify-between border-b py-4" data-product-id="1">
+          <div class="flex items-center space-x-4">
+            <img src="resource/Image/cuangki.jpg" alt="Produk Makanan" class="w-16 h-16 object-cover rounded-md">
+            <div>
+              <h3 class="font-semibold">Makanan Lezat</h3>
+              <p class="text-sm text-gray-600">Rp25.000</p>
+            </div>
+          </div>
+          <div>
+            <input type="number" id="quantity_1_checkout" value="1" class="w-12 px-2 py-1 border rounded-lg text-center" min="1">
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-b py-4" data-product-id="2">
+          <div class="flex items-center space-x-4">
+            <img src="resource/Image/eskuwut.jpg" alt="Produk Minuman" class="w-16 h-16 object-cover rounded-md">
+            <div>
+              <h3 class="font-semibold">Minuman Segar</h3>
+              <p class="text-sm text-gray-600">Rp10.000</p>
+            </div>
+          </div>
+          <div>
+            <input type="number" id="quantity_2_checkout" value="1" class="w-12 px-2 py-1 border rounded-lg text-center" min="1">
+          </div>
+        </div>
+      </div>
+
+      <!-- Alamat Pengiriman -->
+      <h3 class="text-xl font-semibold mt-6 mb-4">Alamat Pengiriman</h3>
+      <form id="shippingForm">
+        <div class="mb-4">
+          <label for="fullName" class="block text-sm font-semibold">Nama Lengkap</label>
+          <input type="text" id="fullName" name="fullName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#35ADC6]" placeholder="Nama lengkap" required>
+        </div>
+        <div class="mb-4">
+          <label for="address" class="block text-sm font-semibold">Alamat</label>
+          <input type="text" id="address" name="address" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#35ADC6]" placeholder="Alamat pengiriman" required>
+        </div>
+        <div class="mb-4">
+          <label for="phoneNumber" class="block text-sm font-semibold">Nomor Telepon</label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#35ADC6]" placeholder="Nomor telepon" required>
+        </div>
+      </form>
+
+      <!-- Total Pembayaran -->
+      <div class="mt-8 flex justify-between items-center">
+        <p class="font-semibold text-lg">Total:</p>
+        <p id="totalPriceCheckout" class="text-xl text-[#35ADC6]">Rp35.000</p>
+      </div>
+
+      <div class="mt-6 flex justify-between">
+        <button class="w-full py-2 bg-[#35ADC6] text-white font-semibold rounded-lg hover:bg-[#2790A0]" onclick="window.location.href='keranjang.html'">Kembali ke Keranjang</button>
+        <button class="w-full py-2 bg-[#35ADC6] text-white font-semibold rounded-lg hover:bg-[#2790A0]" onclick="submitOrder()">Konfirmasi Pesanan</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#0A254A] text-white py-6">
+    <div class="container mx-auto text-center">
+      <p class="text-sm">&copy; 2024 Lapak Rehan. Semua Hak Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Menghitung total harga berdasarkan jumlah produk
+    function updateTotalPriceCheckout() {
+      const quantities = document.querySelectorAll('input[type="number"]');
+      let totalPrice = 0;
+
+      quantities.forEach(input => {
+        const productId = input.id.split('_')[1]; // Ambil ID produk (1, 2, dll)
+        const quantity = parseInt(input.value);
+        const price = parseFloat(document.querySelector(`[data-product-id="${productId}"] .text-gray-600`).innerText.replace('Rp', '').replace('.', ''));
+        totalPrice += price * quantity;
+      });
+
+      document.getElementById('totalPriceCheckout').innerText = `Rp${totalPrice.toLocaleString()}`;
+    }
+
+    // Menjalankan update total harga saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTotalPriceCheckout();
+    });
+
+    // Simulasi pengiriman pesanan
+    function submitOrder() {
+      alert("Pesanan Anda telah dikonfirmasi! Terima kasih telah berbelanja.");
+      window.location.href = "index_noresponsive.html"; // Mengarahkan ke halaman beranda utama
+    }
+  </script>
+
+</body>
+</html>
